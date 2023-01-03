@@ -4,3 +4,14 @@ Portfolio/obj/project.assets.json
 Portfolio/obj/
 Portfolio/wwwroot/
 client-app/obj/
+API/obj/
+Domain/obj/
+Persistence/bin/
+Persistence/obj/
+API/bin/
+obj/
+Domain/bin/
+Application/bin/
+API/portfolio.db
+API/portfolio.db-shm
+API/portfolio.db-wal
