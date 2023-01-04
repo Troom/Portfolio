@@ -1,20 +1,13 @@
+using Application;
+using Application.BlogActions.Query;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Persistance;
 using Persistence;
 
-
-//namespace PortfolioAPI
-//{
-//    public class Program
-//    {
-//        public static async void Main(string[] args)
-//        {
-
-
-            var builder = WebApplication.CreateBuilder(args);
-            builder.Configuration.AddJsonFile("appsettings.json");
-            builder.Services.AddControllers();
-
+var builder = WebApplication.CreateBuilder(args);
+builder.Configuration.AddJsonFile("appsettings.json");
+builder.Services.AddControllers();
 
 builder.Services.AddDbContext<DataContext>(opt =>
             {
@@ -22,47 +15,38 @@ builder.Services.AddDbContext<DataContext>(opt =>
             });
 
 
-            //builder.Services.AddCors(opt =>
-            //{
-            //    opt.AddPolicy("CorsPolicy", policy =>
-            //    {
-            //        policy.AllowAnyMethod().AllowAnyHeader().WithOrigins("*");
-            //        //.AllowAnyOrigin();
-            //        //.WithOrigins("http://localhost:3000");
-            //    });
-            //});
-            //Allow connection from client-app to server-side.
-
-            var app = builder.Build();
-
-//app.UseRouting(); Not used yet
-            app.MapControllers();
-
-            app.UseDefaultFiles();
-            app.UseStaticFiles();
-
-            //app.UseCors("CorsPolicy");
-
-            using var scope = app.Services.CreateScope();
-            var services = scope.ServiceProvider;
+builder.Services.AddCors(opt =>
+{
+    opt.AddPolicy("CorsPolicy", policy =>
+    {
+        //todo change for production.
+        policy.AllowAnyMethod().AllowAnyHeader().WithOrigins("*");
+    });
+});
+//Allow connection from client-app to server-side.
+builder.Services.AddMediatR(typeof(GetPostsList.Handler));
+builder.Services.AddAutoMapper(typeof(MappingProfiles).Assembly);
 
 
+var app = builder.Build();
+app.UseDefaultFiles();
+app.UseStaticFiles();
+app.UseCors("CorsPolicy");
+app.MapControllers();
 
-            try
-            {
-                var context = services.GetRequiredService<DataContext>();
-                await context.Database.MigrateAsync();
-                await Seed.SeedData(context);
-            }
-            catch (Exception ex)
-            {
-                var logger = services.GetRequiredService<ILogger<Program>>();
-                logger.LogError(ex, "An error occured during migration");
-            }
+using var scope = app.Services.CreateScope();
+var services = scope.ServiceProvider;
 
+try
+    {
+        var context = services.GetRequiredService<DataContext>();
+        await context.Database.MigrateAsync();
+        await Seed.SeedData(context);
+    }
+catch (Exception ex)
+    {
+        var logger = services.GetRequiredService<ILogger<Program>>();
+        logger.LogError(ex, "An error occured during migration");
+    }
 
-
-            app.Run();
-//        }
-//    }
-//}
+app.Run();
