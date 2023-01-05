@@ -9,9 +9,14 @@ Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "client-app", "client-app\cl
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Persistence", "Persistence\Persistence.csproj", "{CADC4562-02A7-49C9-A36E-8178F6131368}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain", "Domain\Domain.csproj", "{CF62335E-48B8-4ABE-8A55-28E043B75CD6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Domain", "Domain\Domain.csproj", "{CF62335E-48B8-4ABE-8A55-28E043B75CD6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application", "Application\Application.csproj", "{887C9C0D-4BFC-438B-84CF-EB7D85DEE896}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Application", "Application\Application.csproj", "{887C9C0D-4BFC-438B-84CF-EB7D85DEE896}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{D2C011B8-36CE-46FE-BFF5-7BF7583ABAF8}"
+	ProjectSection(SolutionItems) = preProject
+		README.md = README.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

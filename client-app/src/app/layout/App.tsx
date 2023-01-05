@@ -7,8 +7,11 @@ import PostDashboard from '../../features/blog/dashboard/PostDashboard';
 import { v4 as uuid } from 'uuid';
 import agent from '../api/agent';
 import LoadingComponent from './LoadingComponent';
+import { useStore } from '../stores/store';
+import { observer } from 'mobx-react-lite';
 
 function App() {
+  const {postStore}= useStore();
   const [posts, setPosts] = useState<Post[]>([]);
   const [selectedPost, setSelectedPost] = useState<Post | undefined>(undefined);
   const [editMode, setEditMode] = useState(false);
@@ -16,17 +19,8 @@ function App() {
   const [submitting, setSubmitting] = useState(false);
 
   useEffect(() => {
-    agent.Posts.list()
-      .then(response => {
-        let posts: Post[] = [];
-        response.forEach(post => {
-          post.date = post.date.split('T')[0];
-          posts.push(post);
-        })
-        setPosts(posts);
-        setLoading(false);
-      })
-  }, [])
+    postStore.loadPosts()
+  }, [postStore])
 
   function handleSelectPost(id: string) {
     setSelectedPost(posts.find(x => x.id === id));
@@ -95,6 +89,6 @@ function App() {
   );
 }
 
-export default App;
+export default observer(App);
 
 // axios.get('http://localhost:5202/api/posts')
