@@ -1,15 +1,12 @@
+import { observer } from 'mobx-react-lite';
 import React, { SyntheticEvent, useState } from 'react';
 import {Button, Item, Label, Segment} from "semantic-ui-react";
-import {Post} from "../../../app/models/post";
+import { useStore } from '../../../app/stores/store';
 
-interface Props {
-    posts: Post[];
-    selectPost: (id: string) => void;
-    deletePost: (id: string) => void;
-    submitting: boolean;
-}
-
-export default function PostList({posts, selectPost, deletePost, submitting}: Props) {
+export default observer(function PostList()
+{
+    const {postStore} = useStore();
+    const {deletePost, postsByDate, loadingMode} = postStore;
     const [target, setTarget] = useState('');
 
     function handleDeletePost(e: SyntheticEvent<HTMLButtonElement>, id: string) {
@@ -19,7 +16,7 @@ export default function PostList({posts, selectPost, deletePost, submitting}: Pr
     return (
         <Segment>
             <Item.Group divided>
-                {posts.map(post => (
+                {postsByDate.map(post => (
                     <Item key={post.id}>
                         <Item.Content>
                             <Item.Header as='a'>{post.title}</Item.Header>
@@ -30,8 +27,8 @@ export default function PostList({posts, selectPost, deletePost, submitting}: Pr
                             </Item.Description>
                             <Item.Extra>
                                 <Button floated='right' content='View' color='blue'
-                                        onClick={() => selectPost(post.id)}/>
-                                <Button loading={submitting && target === post.id}
+                                        onClick={() => postStore.selectPost(post.id)}/>
+                                <Button loading={loadingMode && target === post.id}
                                         name={post.id} floated='right' content='Delete'
                                         color='red'
                                         onClick={(e) => handleDeletePost(e, post.id)}/>
@@ -43,4 +40,4 @@ export default function PostList({posts, selectPost, deletePost, submitting}: Pr
             </Item.Group>
         </Segment>
     )
-}
+})

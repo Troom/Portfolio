@@ -15,3 +15,4 @@ Application/bin/
 API/portfolio.db
 API/portfolio.db-shm
 API/portfolio.db-wal
+PortfolioAPI/wwwroot/
